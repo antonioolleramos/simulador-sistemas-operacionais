@@ -1,23 +1,29 @@
-CC := gcc
-CFLAGS := -std=c11 -Wall -Wextra -Wpedantic -Werror -O2
-CPPFLAGS := -Iinclude
-TARGET := simulador
-SOURCES := $(wildcard src/*.c)
-OBJECTS := $(SOURCES:.c=.o)
+.PHONY: all escalonador memoria entrada-saida executar-escalonador executar-memoria executar-es clean
 
-.PHONY: all clean debug
+all: escalonador memoria entrada-saida
 
-all: $(TARGET)
+escalonador:
+	$(MAKE) -C escalonador
 
-$(TARGET): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $@
+memoria:
+	$(MAKE) -C memoria
 
-src/%.o: src/%.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+entrada-saida:
+	$(MAKE) -C entrada_saida
 
-debug: CFLAGS := -std=c11 -Wall -Wextra -Wpedantic -Werror -O0 -g3 \
-	-fsanitize=address,undefined
-debug: clean $(TARGET)
+executar-escalonador: escalonador
+	./escalonador/escalonador \
+		escalonador/entradas/entrada_alternancia.txt
+
+executar-memoria: memoria
+	./memoria/escalonador \
+		memoria/entradas/entradaMemoria.txt
+
+executar-es: entrada-saida
+	./entrada_saida/simulador \
+		entrada_saida/entradas/entrada_ES.txt
 
 clean:
-	$(RM) $(OBJECTS) $(TARGET)
+	$(MAKE) -C escalonador clean
+	$(MAKE) -C memoria clean
+	$(MAKE) -C entrada_saida clean
