@@ -1,0 +1,18 @@
+# Objetos e executáveis gerados pela compilação
+*.o
+*.exe
+escalonador/escalonador
+memoria/escalonador
+entrada_saida/simulador
+
+# Arquivos de editores e sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Saídas de execução e depuração
+*.out
+*.log
+*.gcda
+*.gcno
